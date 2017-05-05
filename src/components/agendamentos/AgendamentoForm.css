@@ -1,0 +1,22 @@
+.shopping-form-container {
+  margin-left: 24%;
+  margin-top: 50px;
+}
+
+.submit-input {
+  background-color: #983352;
+  color: white;
+  height: 60px;
+  border-radius: 15px;
+  font-size: 2.3em;
+}
+
+.time-picker {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 10px;
+}
+
+.rating-component {
+  font-size: 2em;
+}

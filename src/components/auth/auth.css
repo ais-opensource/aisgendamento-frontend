@@ -1,0 +1,32 @@
+.login-container {
+  margin-top: 60px;
+}
+
+.title {
+  font-size: 3em;
+  margin-bottom: 20px;
+}
+
+.form-item {
+
+}
+
+.input-form {
+  width: 500px;
+  margin: 5px;
+  height: 60px;
+  font-size: 1.8em;
+}
+
+
+.submit-form {
+  margin-top: 20px;
+  padding: 40px;
+  padding-left: 100px;
+  padding-right: 100px;
+  font-size: 1.8em;
+}
+
+.submit-form:hover {
+  background-color: #AAF683;
+}
