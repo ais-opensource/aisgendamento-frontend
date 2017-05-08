@@ -1,9 +1,7 @@
 import React from 'react'
-
+import { connect } from 'react-redux'
+import { signIn } from '../actions/auth-actions'
 import '../auth.css'
-
-
-
 
 export class Login extends React.Component {
 
@@ -14,7 +12,11 @@ export class Login extends React.Component {
 
   onSubmit(event) {
     event.preventDefault();
-
+    const signinData = {
+      username: event.target.email.value,
+      password: event.target.password.value,
+    }
+    this.props.dispatch(signIn(signinData.username, signinData.password, this.props.dispatch))
   }
 
   render() {
@@ -36,3 +38,11 @@ export class Login extends React.Component {
     )
   }
 }
+
+
+
+export default connect(store => {
+  return {
+    authReducer: store.authReducer
+  }
+})(Login)

@@ -1,10 +1,4 @@
 import React from 'react'
-import {
-  CognitoUserPool,
-  AuthenticationDetails,
-  CognitoUserAttribute,
-  CognitoUser
-} from 'amazon-cognito-identity-js'
 import config from '../../../config'
 
 import '../auth.css'

@@ -1,11 +1,12 @@
 import {
   CognitoUserPool,
   AuthenticationDetails,
-  CognitoUser
+  CognitoUser,
+  CognitoUserAttribute
 } from 'amazon-cognito-identity-js'
 import config from '../../../config'
 
-export function signIn(username, password) {
+export function signIn(username, password, dispatch) {
   const authenticationData = {
     Username: username,
     Password: password,
@@ -19,13 +20,29 @@ export function signIn(username, password) {
     Pool: userPool
   })
   const authenticationDetails = new AuthenticationDetails(authenticationData);
-  return new Promise((resolve, reject) => (
+  let call = new Promise((resolve, reject) => (
     user.authenticateUser(authenticationDetails, {
       onSuccess: (result) => resolve(result.getIdToken().getJwtToken()),
       onFailure: (error) => reject(`an error happened getting your token, ${error}`),
     })
-  )).then((token) => { type: 'USER_TOKEN', payload: token})
-    .catch((error) => { type: 'SIGN_IN_ERROR', payload: error})
+  )).then((token) => {
+    dispatch(signInDone({
+      token: token,
+      user: user,
+    }))
+  }).catch((error) => {
+    dispatch({ type: 'SIGN_IN_ERROR', payload: error })
+  })
+  return {
+    type: 'USER_TOKEN_PENDING'
+  }
+}
+
+function signInDone(userData) {
+  return {
+    type: 'USER_TOKEN',
+    payload: userData
+  }
 }
 
 export function signUp(username, password) {
@@ -42,8 +59,18 @@ export function signUp(username, password) {
       }
     resolve(result)
    })
- )).then((user) => { type: 'USER', payload: user})
-   .catch((error) => { type: 'SIGN_UP_ERROR', payload: error})
+ )).then((user) => {
+    return {
+      type: 'USER',
+      payload: user
+    }
+  })
+  .catch((error) => {
+    return {
+      type: 'SIGN_UP_ERROR',
+      payload: error,
+    }
+  })
 }
 
 export function confirm(user, confirmationCode) {
@@ -59,6 +86,33 @@ export function confirm(user, confirmationCode) {
       }
       resolve(result)
     })
-  }).then((confirmation) => { type: 'USER_CONFIRMED', payload: confirmation })
-    .catch((error) => { type: 'USER_CONFIRMED_ERROR', payload: error })
+  }).then((confirmation) => {
+    return {
+      type: 'USER_CONFIRMED',
+      payload: confirmation
+    }
+  })
+}
+
+export function getCurrentUser(cognitoUser, dispatch) {
+  cognitoUser.getUserAttributes((error, result) => {
+    if (error) {
+      dispatch(getCurrentUserError(error))
+    }
+    dispatch(getCurrentUserDone(result))
+  })
+}
+
+function getCurrentUserDone(userAttributes) {
+  return {
+    type: 'USER_DATA',
+    payload: userAttributes,
+  }
+}
+
+function getCurrentUserError(error) {
+  return {
+    type: 'USER_ERROR',
+    payload: error,
+  }
 }
