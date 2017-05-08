@@ -1,0 +1,23 @@
+.App-header {
+  background-color: #222;
+  height: 150px;
+  color: white;
+  margin-bottom: 100px;
+}
+
+.menu {
+  display: flex;
+  justify-content: flex-end;
+  background-color: #CCCCCC;
+  margin-bottom: 50px;
+}
+
+.menu-item {
+  padding: 10px;
+  font-size: 3em;
+}
+
+.menu-item:hover {
+  text-decoration: none;
+  color: #e0963c;
+}
