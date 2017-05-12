@@ -15,28 +15,29 @@ import './App.css'
 
 export class App extends Component {
 
+  constructor(props) {
+    super(props)
+    this.getUserData = this.getUserData.bind(this)
+  }
 
   getUserData() {
     const { userToken } = this.props.authReducer;
-    if (userToken) {
-      console.log(userToken.user.getUserAttributes(function(error, result) {
-        if (error) {
-          console.log('errior -> ', error)
-        }else {
-          console.log('result ->', result)
-        }
 
-      }))
+    if (userToken && userToken.user) {
+      return {
+        username: userToken.user.username,
+      }
     }
+    return null
   }
+
+
   render() {
-    if (this.props.authReducer.userToken) {
-      this.getUserData()
-    }
+
     return (
       <BrowserRouter>
         <div className="App">
-          <Header />
+          <Header userData={this.getUserData()}/>
           <div className="main">
             <Route exact path="/" component={Agendamentos} />
             <Route path="/login" component={Login} />

@@ -2,19 +2,21 @@ import {
   CognitoUserPool,
   AuthenticationDetails,
   CognitoUser,
-  CognitoUserAttribute
+  CognitoUserAttribute,
 } from 'amazon-cognito-identity-js'
 import config from '../../../config'
+
+const userPool = new CognitoUserPool({
+  UserPoolId: config.cognito.USER_POOL_ID,
+  ClientId: config.cognito.APP_CLIENT_ID
+});
 
 export function signIn(username, password, dispatch) {
   const authenticationData = {
     Username: username,
     Password: password,
   }
-  const userPool = new CognitoUserPool({
-    UserPoolId: config.cognito.USER_POOL_ID,
-    ClientId: config.cognito.APP_CLIENT_ID
-  });
+
   const user = new CognitoUser({
     Username: authenticationData.Username,
     Pool: userPool
@@ -46,10 +48,7 @@ function signInDone(userData) {
 }
 
 export function signUp(username, password) {
-  const userPool = new CognitoUserPool({
-    UserPoolId: config.cognito.USER_POOL_ID,
-    ClientId: config.cognito.APP_CLIENT_ID
-  });
+
   const attributeEmail = new CognitoUserAttribute({ Name : 'email', Value : username });
   return new Promise((resolve, reject) => (
     userPool.signUp(username, password, [attributeEmail], null, (err, result) => {
@@ -74,10 +73,7 @@ export function signUp(username, password) {
 }
 
 export function confirm(user, confirmationCode) {
-  const userPool = new CognitoUserPool({
-    UserPoolId: config.cognito.USER_POOL_ID,
-    ClientId: config.cognito.APP_CLIENT_ID
-  })
+
   return new Promise((resolve, reject) => {
     user.confirmRegistration(confirmationCode, true, (error, result) => {
       if (error) {
@@ -94,13 +90,16 @@ export function confirm(user, confirmationCode) {
   })
 }
 
-export function getCurrentUser(cognitoUser, dispatch) {
-  cognitoUser.getUserAttributes((error, result) => {
-    if (error) {
-      dispatch(getCurrentUserError(error))
-    }
-    dispatch(getCurrentUserDone(result))
-  })
+export function getCurrentUser(username, dispatch) {
+  console.log('get current user ->', username)
+  const userData = {
+    Username: username,
+    Pool: userPool,
+  }
+  dispatch(getCurrentUserDone(new CognitoUser(userData)))
+  return {
+    type: 'USER_DATA_PENDING',
+  }
 }
 
 function getCurrentUserDone(userAttributes) {
@@ -115,4 +114,8 @@ function getCurrentUserError(error) {
     type: 'USER_ERROR',
     payload: error,
   }
+}
+
+export function authenticate(username) {
+
 }

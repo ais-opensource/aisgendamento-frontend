@@ -3,11 +3,30 @@ import './Header.css'
 import logo from './logo.svg';
 export class Header extends React.Component  {
 
+  constructor(props) {
+    super(props)
+
+    this.renderUserData = this.renderUserData.bind(this)
+  }
+  renderUserData() {
+    const { userData } = this.props;
+    if (userData) {
+      return (
+        <div className="user-data">
+          {userData.username}
+        </div>
+      )
+    }
+    return null
+  }
+
   render() {
+    console.log(`USER DATA -> ${JSON.stringify(this.props.userData)}`)
     return (
       <div className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <h2>AISGENDAMENTO V. 1.0 </h2>
+        {this.renderUserData()}
+        <div>AISGENDAMENTO V. 1.0 </div>
         <div className="menu">
           <a className="menu-item" href="/">agendamentos </a>
           <a className="menu-item" href="/experiencias">experiencias</a>
