@@ -1,6 +1,8 @@
 import React from 'react'
 import './Header.css'
 import logo from './logo.svg';
+import { logout } from '../auth/actions/auth-actions'
+
 export class Header extends React.Component  {
 
   constructor(props) {
@@ -20,8 +22,11 @@ export class Header extends React.Component  {
     return null
   }
 
+  logout() {
+
+  }
+
   render() {
-    console.log(`USER DATA -> ${JSON.stringify(this.props.userData)}`)
     return (
       <div className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
@@ -30,7 +35,10 @@ export class Header extends React.Component  {
         <div className="menu">
           <a className="menu-item" href="/">agendamentos </a>
           <a className="menu-item" href="/experiencias">experiencias</a>
-          <a className="menu-item" href="/login">login</a>
+          {this.props.userData ?
+            <a className="menu-item" href="" onClick={this.logout}>logout</a> :
+            <a className="menu-item" href="/login">login</a>
+          }
         </div>
       </div>
     )

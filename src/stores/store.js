@@ -6,7 +6,7 @@ import rootReducer from '../reducers/root-reducer'
 
 const logger = createLogger();
 const middleware = [ ReduxThunk, logger]
-const mainStore = createStore(rootReducer, {}, compose(applyMiddleware(...middleware), autoRehydrate()))
+const mainStore = createStore(rootReducer, {}, compose(applyMiddleware(...middleware)))
 persistStore(mainStore)
 
 

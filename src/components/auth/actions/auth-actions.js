@@ -116,6 +116,9 @@ function getCurrentUserError(error) {
   }
 }
 
-export function authenticate(username) {
-
+export function logout() {
+  return {
+    type: 'USER_DATA',
+    payload: null
+  }
 }

@@ -26,6 +26,7 @@ export class App extends Component {
     if (userToken && userToken.user) {
       return {
         username: userToken.user.username,
+        user: userToken.user
       }
     }
     return null
@@ -33,11 +34,11 @@ export class App extends Component {
 
 
   render() {
-
+    const userData = this.getUserData()
     return (
       <BrowserRouter>
         <div className="App">
-          <Header userData={this.getUserData()}/>
+          <Header userData={userData}/>
           <div className="main">
             <Route exact path="/" component={Agendamentos} />
             <Route path="/login" component={Login} />
