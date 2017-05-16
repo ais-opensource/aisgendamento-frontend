@@ -23,6 +23,11 @@ const authReducer = (state=initialState, action) => {
         ...state,
         userAttributes: action.payload
       }
+    case 'CURRENT_USER':
+      return {
+        ...state,
+        currentUser: action.payload,
+      }
     case 'SIGN_UP_ERROR':
       return {
         ...state,

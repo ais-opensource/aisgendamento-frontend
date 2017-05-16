@@ -29,8 +29,10 @@ export class App extends Component {
         user: userToken.user
       }
     }
+    console.log('get user on getuserdata',this.props.dispatch(getCurrentUser(this.props.dispatch)))
     return null
   }
+
 
 
   render() {

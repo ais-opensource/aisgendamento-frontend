@@ -90,22 +90,27 @@ export function confirm(user, confirmationCode) {
   })
 }
 
-export function getCurrentUser(username, dispatch) {
-  console.log('get current user ->', username)
-  const userData = {
-    Username: username,
-    Pool: userPool,
-  }
-  dispatch(getCurrentUserDone(new CognitoUser(userData)))
+export function getCurrentUser(dispatch) {
+  const currentUser = userPool.getCurrentUser();
+  currentUser.getSession((error, session) => {
+    if (error) {
+      dispatch(getCurrentUserError(error))
+    }
+    dispatch(getCurrentUserDone({
+      user: currentUser,
+      session: session
+    }))
+  })
+  console.log('really funny')
   return {
     type: 'USER_DATA_PENDING',
   }
 }
 
-function getCurrentUserDone(userAttributes) {
+function getCurrentUserDone(currentUser) {
   return {
-    type: 'USER_DATA',
-    payload: userAttributes,
+    type: 'CURRENT_USER',
+    payload: currentUser,
   }
 }
 
